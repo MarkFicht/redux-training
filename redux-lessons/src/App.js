@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, bindActionCreators } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const initialChars = {
@@ -22,8 +22,10 @@ const initialMovies = {
 /**
  * 1. Tworzenie store - reducer i funkcja createStore co przyjmuje funkcjie.
  * 2. Wykonywanie akcji dispatch(obiekt z type) - rozpraszamy stan, by nie gubić całego obiektu. przykazywanie action.type w dispatch
- * 3. Redux DevTools - Instalacja chrome + aktywacja w redux(by działała) z 'composeWithDevTools()' jako 2 parametr w createStore()
- * 4. Łączenie store(combineReducer) - 
+ * 3. Redux DevTools - instalacja chrome + aktywacja w redux(by działała) z 'composeWithDevTools()' jako 2 parametr w createStore()
+ * 4. Łączenie store( combineReducer({}) ) - przyjmuje obiekt z reducerami
+ * 5. Kreatory akcji - zwykla funckja ktora opakowuje obiekt w dispatch, co by bylo czytelniej
+ * 5a. bindActionCreators - fajniejszy sposob na rozdzielanie akcji, zeby nie spamowac 'store.dispatch'
  * 
  */
 
@@ -70,13 +72,30 @@ function movies( state = initialMovies, action ) {
   }
 }
 
-//---
+//--- 4.
 // const allReducers = combineReducers({ heros: characters, movies })
 const allReducers = combineReducers({ characters, movies })
 
-//---
 const store = createStore(allReducers, composeWithDevTools());
 window.store = store;
+
+//--- 5.
+// standard
+store.dispatch({ type: 'ADD_CHARACTER', character: 'Krillin' });
+
+// good
+const addCharacter = character => ({ type: 'ADD_CHARACTER', character });
+const resetCharacters = () => ({ type: 'RESET_CHARACTERS' });
+
+store.dispatch( addCharacter('c18') )
+
+//--- 5a.
+// better
+const charactersAction = bindActionCreators({ add: addCharacter, reset: resetCharacters }, store.dispatch);
+
+charactersAction.reset();
+charactersAction.add('c17');
+
 
 /** 1. */
 console.log( window.store.getState() );
