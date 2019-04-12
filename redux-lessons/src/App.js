@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const initialChars = {
   name: 'Favourite characters',
   characters: [
-    'Goku',
-    'Vegeta'
+    'Goku', 'Vegeta'
+  ]
+}
+
+const initialMovies = {
+  name: 'Movies',
+  movies: [
+    'dbz', 'dbgt'
   ]
 }
 
@@ -36,15 +42,11 @@ const initialChars = {
 
 function characters( state = initialChars, action ) {
   switch (action.type) {
-    case 'ADD_TEST':
-      return {
-        ...state, characters: [...state.characters, 'Piccolo']
-      }
-    case 'ADD':
+    case 'ADD_CHARACTER':
       return {
         ...state, characters: [...state.characters, action.character]
       }
-    case 'RESET':
+    case 'RESET_CHARACTERS':
       return {
         ...state, characters: []
       }
@@ -53,8 +55,27 @@ function characters( state = initialChars, action ) {
   }
 }
 
+function movies( state = initialMovies, action ) {
+  switch(action.type) {
+    case 'ADD_MOVIE':
+      return {
+        ...state, movies: [...state.movies, action.movie]
+      }
+    case 'RESET_MOVIES':
+      return {
+        ...state, movies: []
+      }
+    default:
+      return state
+  }
+}
+
 //---
-const store = createStore(characters, composeWithDevTools());
+// const allReducers = combineReducers({ heros: characters, movies })
+const allReducers = combineReducers({ characters, movies })
+
+//---
+const store = createStore(allReducers, composeWithDevTools());
 window.store = store;
 
 /** 1. */
@@ -62,9 +83,16 @@ console.log( window.store.getState() );
 
 /** 2. */
 // console.log( window.store.dispatch({ type: 'RESET' }) );
-console.log( window.store.dispatch({ type: 'ADD_TEST' }) );
-console.log( window.store.dispatch({ type: 'ADD', character: 'Gohan' }) );
+// console.log( window.store.dispatch({ type: 'ADD_TEST' }) );
+// console.log( window.store.dispatch({ type: 'ADD', character: 'Gohan' }) );
+// console.log( window.store.getState() );
+
+/** 4. */
+console.log( window.store.dispatch({ type: 'ADD_CHARACTER', character: 'Gohan' }) );
+console.log( window.store.dispatch({ type: 'ADD_MOVIE', movie: 'dbs' }) );
 console.log( window.store.getState() );
+
+
 
 
 
