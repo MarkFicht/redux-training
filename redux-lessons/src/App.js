@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const initialChars = {
   name: 'Favourite characters',
@@ -15,6 +16,9 @@ const initialChars = {
 /**
  * 1. Tworzenie store - reducer i funkcja createStore co przyjmuje funkcjie.
  * 2. Wykonywanie akcji dispatch(obiekt z type) - rozpraszamy stan, by nie gubić całego obiektu. przykazywanie action.type w dispatch
+ * 3. Redux DevTools - Instalacja chrome + aktywacja w redux(by działała) z 'composeWithDevTools()' jako 2 parametr w createStore()
+ * 4. Łączenie store(combineReducer) - 
+ * 
  */
 
 //---
@@ -50,7 +54,7 @@ function characters( state = initialChars, action ) {
 }
 
 //---
-const store = createStore(characters);
+const store = createStore(characters, composeWithDevTools());
 window.store = store;
 
 /** 1. */
