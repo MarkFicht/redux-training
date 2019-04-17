@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import MoviesContainer from './app/movies/components/MoviesContainer'
+import MoviesForm from './app/movies/components/MoviesForm'
 
 /**
  * https://redux.js.org/introduction/getting-started
@@ -10,9 +11,9 @@ import MoviesContainer from './app/movies/components/MoviesContainer'
  * 4. Łączenie store( combineReducer({}) ) - przyjmuje obiekt z reducerami
  * 5. Kreatory akcji - zwykla funckja ktora opakowuje obiekt w dispatch, co by bylo czytelniej
  * 5a. bindActionCreators - fajniejszy sposob na rozdzielanie akcji, zeby nie spamowac 'store.dispatch'
- * 6. Struktura projektu - 
- * 7. react-redux - 
- * 
+ * 6. Struktura projektu - dir 'duck', logicznie podzielona kazda kolekcja danych
+ * 7. react-redux - connect() + podzial stora i rootReducer, ktory umieszczamy na starcie w index.js
+ * 8. dispatch() przez React - 
  */
 
 //---
@@ -21,6 +22,7 @@ class App extends Component {
     return (
       <div className="App">
         <MoviesContainer />
+        <MoviesForm />
       </div>
     );
   }
